@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlaylistGen AI - Crie Playlists Incríveis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar para um toque mais moderno (opcional) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5; /* indigo-600 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1; /* indigo-500 */
+        }
+
+        /* Efeito de pulso sutil no botão de gerar */
+        .pulse-effect:hover {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); } /* indigo-600 com alpha */
+            70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 antialiased">
+
+    <div class="w-full max-w-2xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-bold mb-3">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500">
+                    PlaylistGen
+                </span>
+                <span class="text-indigo-400">AI</span>
+            </h1>
+            <p class="text-lg text-gray-400">Crie playlists personalizadas com o poder da Inteligência Artificial.</p>
+        </header>
+
+        <main class="w-full">
+            <div id="formulario" class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-700 mb-10">
+                <div class="mb-6">
+                    <label for="genre-input" class="block text-left text-sm font-medium mb-2 text-gray-300">
+                        Qual o ritmo da sua vibe hoje? (Gênero Musical)
+                    </label>
+                    <input type="text" id="genre-input"
+                           class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-100 placeholder-gray-500 transition-colors"
+                           placeholder="Ex: Funk, Indie Pop, Lo-fi Beats...">
+                </div>
+
+                <h3 class="text-sm font-medium mb-3 text-gray-300 text-left">Seus artistas preferidos para essa batida:</h3>
+                <div id="artist-inputs" class="space-y-4 mb-6">
+                    <!-- Linha de artista inicial -->
+                    <div class="artist-row flex items-center space-x-3">
+                        <input type="text"
+                               class="artist-input flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-100 placeholder-gray-500 transition-colors"
+                               placeholder="Nome do artista">
+                        <button class="btn-danger bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            Excluir
+                        </button>
+                    </div>
+                    <!-- Adicione mais duas linhas aqui se quiser começar com 3, ou deixe o JS cuidar -->
+                    <div class="artist-row flex items-center space-x-3">
+                        <input type="text"
+                               class="artist-input flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-100 placeholder-gray-500 transition-colors"
+                               placeholder="Nome do artista">
+                        <button class="btn-danger bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            Excluir
+                        </button>
+                    </div>
+                    <div class="artist-row flex items-center space-x-3">
+                        <input type="text"
+                               class="artist-input flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-100 placeholder-gray-500 transition-colors"
+                               placeholder="Nome do artista">
+                        <button class="btn-danger bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            Excluir
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0 sm:space-x-3 mb-4">
+                    <button id="add-artist-btn"
+                            class="w-full sm:w-auto btn-secondary bg-gray-600 hover:bg-gray-500 text-gray-200 font-semibold py-3 px-6 rounded-lg transition-colors text-sm">
+                        + Artista
+                    </button>
+                    <button id="clear-fields-btn"
+                            class="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-gray-200 font-semibold py-3 px-6 rounded-lg transition-colors text-sm">
+                        Limpar Tudo
+                    </button>
+                </div>
+                <button id="generate-playlist-btn"
+                        class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 hover:from-purple-700 hover:via-pink-700 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 ease-in-out text-lg shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-400 focus:ring-opacity-50 pulse-effect">
+                    Gerar Minha Playlist ✨
+                </button>
+            </div>
+
+            <div id="response"
+                 class="response bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-700 mt-8 text-left hidden min-h-[100px]">
+                <!-- Conteúdo da resposta será inserido aqui pelo JS -->
+                 <div class="flex justify-center items-center h-full">
+                    <p class="text-gray-400 italic">Aguardando a mágica acontecer...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-12 pb-6">
+            <p class="text-sm text-gray-500">
+                Desenvolvido com ❤️ e IA por <a href="#" class="text-indigo-400 hover:text-indigo-300">Seu Nome/Projeto</a>.
+            </p>
+        </footer>
+    </div>
+
+    <script src="./script.js" defer></script>
+</body>
+</html>
